@@ -2,6 +2,9 @@ package com.pixeltoad.ld29.gfx;
 
 public class Art
 {
+	public Bitmap spriteSheet = new Bitmap("/sprites.png");
+	public Bitmap background = new Bitmap("/background.png");
+
 	private int width, height;
 	private int[] pixels;
 
@@ -146,7 +149,7 @@ public class Art
 			}
 		}
 	}
-	
+
 	public int blendPixels(int backgroundColor, int pixelToBlendColor, int alpha)
 	{
 
@@ -172,6 +175,63 @@ public class Art
 		b = ((b * alpha_blend + bb * alpha_background) >> 8) & 0xff;
 
 		return 0xff000000 | r | g | b;
+	}
+
+	public static String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ      " + //
+			"0123456789!\\/[](){}+-=©         ";
+
+	public void drawText(String text, int xOffs, int yOffs, int color)
+	{
+		drawText(text, xOffs, yOffs, color, 255);
+	}
+
+	public void drawText(String text, int xOffs, int yOffs, int color, int alpha)
+	{
+		String[] lines = text.split("\n");
+
+		for (int i = 0; i < lines.length; i++)
+		{
+			String line = lines[i].trim();
+			
+			drawString(line, xOffs, yOffs + i * 10, color, alpha);
+		}
+	}
+
+	private void drawString(String text, int xOffs, int yOffs, int color, int alpha)
+	{
+		text = text.toUpperCase();
+		for (int i = 0; i < text.length(); i++)
+		{
+			int ix = chars.indexOf(text.charAt(i));
+			if (ix >= 0)
+			{
+				drawTile(spriteSheet, xOffs + i * 8, yOffs, 30 * 32 + ix, 8, color, alpha);
+			}
+		}
+	}
+
+	private void drawTile(Bitmap bitmap, int xOffs, int yOffs, int tile, int tileSize, int color, int alpha)
+	{
+		int xTile = tile % (bitmap.getWidth() / tileSize);
+		int yTile = tile / (bitmap.getWidth() / tileSize);
+		int tOffs = xTile * tileSize + yTile * tileSize * bitmap.getWidth();
+
+		for (int y = 0; y < tileSize; y++)
+		{
+			int yPos = y + yOffs;
+			if (yPos >= height || yPos < 0)
+				continue;
+			for (int x = 0; x < tileSize; x++)
+			{
+				int xPos = x + xOffs;
+				if (xPos >= width || xPos < 0)
+					continue;
+				int mcolor = bitmap.getPixels()[x + y * bitmap.getWidth() + tOffs];
+				int a = (mcolor >> 24) & 0xFF;
+				if (a == 255)
+					pixels[xPos + yPos * width] = color;
+			}
+		}
 	}
 
 	public int getHeight()

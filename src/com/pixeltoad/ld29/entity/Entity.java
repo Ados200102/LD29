@@ -3,10 +3,12 @@ package com.pixeltoad.ld29.entity;
 import com.pixeltoad.ld29.InputHandler;
 import com.pixeltoad.ld29.geom.Rectangle;
 import com.pixeltoad.ld29.gfx.Art;
+import com.pixeltoad.ld29.level.Level;
 
 public abstract class Entity
 {
 	private int x, y, width, height;
+	public int id;
 	private Rectangle hitBox;
 	
 	public Entity(int x, int y, int width, int height)
@@ -18,8 +20,8 @@ public abstract class Entity
 		hitBox = new Rectangle(x, y, width, height);
 	}
 	
-	public abstract void render(Art art);
-	public abstract void tick(InputHandler input);
+	public abstract void render(Art art, Level level);
+	public abstract void tick(InputHandler input, Level level);
 	
 	public void move(int x, int y)
 	{
@@ -60,5 +62,10 @@ public abstract class Entity
 	public Rectangle getHitBox()
 	{
 		return hitBox;
+	}
+
+	public int getId()
+	{
+		return id;
 	}
 }

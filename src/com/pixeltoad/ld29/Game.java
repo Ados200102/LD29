@@ -1,22 +1,20 @@
 package com.pixeltoad.ld29;
 
-import java.util.Random;
-
-import com.pixeltoad.ld29.entity.Player;
 import com.pixeltoad.ld29.gfx.Art;
 import com.pixeltoad.ld29.gfx.Bitmap;
+import com.pixeltoad.ld29.level.Level;
 
 public class Game
 {
 	private int width, height;
-	
+
 	public InputHandler input;
 	public Bitmap bitmap = new Bitmap("/background.png");
 	public Bitmap tileSheet = new Bitmap("/sprites.png");
 	public Art art;
-	
-	public Player player;
-	
+
+	public Level level;
+
 	public Game(GameComponent gameComponent, int width, int height)
 	{
 		this.width = width;
@@ -24,29 +22,22 @@ public class Game
 
 		input = new InputHandler(gameComponent);
 		art = new Art(width, height);
-		
-		player = new Player(0,0);
+
+		level = new Level(width, height);
 	}
-	
-	int scroll;
-	
-	int rx;
-	
-	Random r = new Random();
-	
+
 	public void tick()
 	{
-		player.tick(input);
-		scroll += 2;
-		if(scroll > height){
-			scroll = 0;
-			rx = r.nextInt(width - 16); 
-		}
+		if (level != null)
+			level.tick(input);
 	}
 
 	public void render()
 	{
 		art.fill(width, height, 0, 0, 0xFF000000);
-		player.render(art);
+		if (level != null)
+			level.render(art);
+		
+		art.drawText("Test \n test1", 10, 10, 0xFFFFFF);
 	}
 }
