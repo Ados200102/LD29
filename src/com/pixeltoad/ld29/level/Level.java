@@ -19,6 +19,8 @@ public class Level
 
 	public float speed = 1;
 	public int distance;
+	
+	public Set set;
 
 	public Level(int width, int height)
 	{
@@ -83,10 +85,13 @@ public class Level
 				e.tick(input, this);
 			}
 		}
+		
+		if (random.nextInt(64) < 2)
+		{
+			spawnEntity(new RenderEntity(random.nextInt(width - 8), height + 1, random.nextInt(6)));
+		}
 
 		player.tick(input, this);
-
-		generate();
 	}
 
 	public int getFreeEntityId()
@@ -117,9 +122,9 @@ public class Level
 
 	public void generate()
 	{
-		if (random.nextInt(64) < 2)
+		if(set.isDone(this))
 		{
-			spawnEntity(new RenderEntity(random.nextInt(width - 8), height + 1, random.nextInt(6), -1));
+			
 		}
 	}
 }

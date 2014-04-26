@@ -39,8 +39,15 @@ public class Set
 		return this;
 	}
 
-	public void endOfSet()
+	public boolean isDone(Level level)
 	{
+		for(Entity e : entities)
+		{
+			if(e != null)
+				if(!e.isOnScreen(level))
+					return false;
+		}
 		
+		return true;
 	}
 }

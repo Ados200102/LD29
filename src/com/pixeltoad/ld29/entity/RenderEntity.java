@@ -6,13 +6,12 @@ import com.pixeltoad.ld29.level.Level;
 
 public class RenderEntity extends Entity
 {
-	private int tile, ydir;
+	private int tile;
 
-	public RenderEntity(int x, int y, int tile, int ydir)
+	public RenderEntity(int x, int y, int tile)
 	{
 		super(x, y, 8, 8);
 		this.tile = tile;
-		this.ydir = ydir;
 	}
 
 	@Override
