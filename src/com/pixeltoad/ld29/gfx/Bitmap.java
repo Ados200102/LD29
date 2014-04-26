@@ -11,9 +11,15 @@ public class Bitmap
 	private int width, height;
 	private int[] pixels;
 	
-	public Bitmap(String file) throws IOException
+	public Bitmap(String file)
 	{
-		image = ImageIO.read(Bitmap.class.getResourceAsStream(file));
+		try
+		{
+			image = ImageIO.read(Bitmap.class.getResourceAsStream(file));
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 		
 		width = image.getWidth();
 		height = image.getHeight();
