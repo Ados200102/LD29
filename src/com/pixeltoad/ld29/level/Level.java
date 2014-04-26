@@ -10,7 +10,7 @@ import com.pixeltoad.ld29.gfx.Art;
 
 public class Level
 {
-	private Random random = new Random(200010);
+	private Random random = new Random();
 	public int width, height;
 	public Entity[] entities = new Entity[1024];
 	public Player player;
@@ -19,7 +19,7 @@ public class Level
 
 	public float speed = 1;
 	public int distance;
-	
+
 	public Set set;
 
 	public Level(int width, int height)
@@ -27,6 +27,8 @@ public class Level
 		this.width = width;
 		this.height = height;
 		player = new Player(width / 2 - 4, 32);
+		set = Set.getSet(0);
+		addSet();
 	}
 
 	public void render(Art art)
@@ -50,7 +52,7 @@ public class Level
 
 		player.render(art, this);
 
-		art.drawText("Distance: " + distance / 8 + "M\n" + "Speed: " + (int)speed, 2, 2, 0xFFFFFF);
+		art.drawText("Distance: " + distance / 8 + "M\n" + "Speed: " + (int) speed, 2, 2, 0xFFFFFF);
 	}
 
 	private int scroll, scroll2;
@@ -70,7 +72,7 @@ public class Level
 			speed = (distance / 8 / 1000.0f) + 1;
 			speed = Math.min(speed, MAX_SPEED);
 		}
-		
+
 		for (int i = 0; i < entities.length; i++)
 		{
 			Entity e = entities[i];
@@ -85,11 +87,13 @@ public class Level
 				e.tick(input, this);
 			}
 		}
-		
+
 		if (random.nextInt(64) < 2)
 		{
 			spawnEntity(new RenderEntity(random.nextInt(width - 8), height + 1, random.nextInt(6)));
 		}
+
+		generate();
 
 		player.tick(input, this);
 	}
@@ -115,6 +119,18 @@ public class Level
 		}
 	}
 
+	public void addSet()
+	{
+		for (Entity e : set.getEntities())
+		{
+			if (e != null)
+			{
+				e.move(0, height);
+				spawnEntity(e);
+			}
+		}
+	}
+
 	public void removeEntity(Entity entity)
 	{
 		entities[entity.id] = null;
@@ -122,9 +138,10 @@ public class Level
 
 	public void generate()
 	{
-		if(set.isDone(this))
-		{
-			
-		}
+		if (set != null)
+			if (set.isDone(this))
+			{
+				System.out.println("Test");
+			}
 	}
 }
