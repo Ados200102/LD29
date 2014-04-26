@@ -37,7 +37,5 @@ public class Game
 		art.fill(width, height, 0, 0, 0xFF000000);
 		if (level != null)
 			level.render(art);
-		
-		art.drawText("Test \n test1", 10, 10, 0xFFFFFF);
 	}
 }

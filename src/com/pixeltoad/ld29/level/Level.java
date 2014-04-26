@@ -1,6 +1,5 @@
 package com.pixeltoad.ld29.level;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import com.pixeltoad.ld29.InputHandler;
@@ -11,11 +10,14 @@ import com.pixeltoad.ld29.gfx.Art;
 
 public class Level
 {
-	private Random random = new Random();
+	private Random random = new Random(200010);
 	public int width, height;
 	public Entity[] entities = new Entity[1024];
 	public Player player;
-	
+
+	public final int MAX_SPEED = 12;
+
+	public float speed = 1;
 	public int distance;
 
 	public Level(int width, int height)
@@ -29,13 +31,13 @@ public class Level
 	{
 		art.drawBitmap(art.background, 0, -scroll);
 		art.drawBitmap(art.background, 0, -scroll + height);
-		
-		for(int y = 0; y < (height / 8) + 4; y++)
+
+		for (int y = 0; y < (height / 8) + 4; y++)
 		{
 			art.drawTile(art.spriteSheet, 0, y * 8 + -scroll2, 32 + (y % 2 == 0 ? 2 : 0), 8);
 			art.drawTile(art.spriteSheet, width - 8, y * 8 + -scroll2, 33 + (y % 2 == 0 ? 2 : 0), 8);
 		}
-		
+
 		for (Entity e : entities)
 		{
 			if (e != null)
@@ -45,19 +47,27 @@ public class Level
 		}
 
 		player.render(art, this);
+
+		art.drawText("Distance: " + distance / 8 + "M\n" + "Speed: " + (int)speed, 2, 2, 0xFFFFFF);
 	}
 
 	private int scroll, scroll2;
 
 	public void tick(InputHandler input)
 	{
-		scroll++;
-		scroll2++;
-		
+		scroll += speed;
+		scroll2 += speed;
+
 		scroll %= height;
 		scroll2 %= 16;
-		
-		distance++;
+
+		distance += speed;
+
+		if (speed < MAX_SPEED)
+		{
+			speed = (distance / 8 / 1000.0f) + 1;
+			speed = Math.min(speed, MAX_SPEED);
+		}
 		
 		for (int i = 0; i < entities.length; i++)
 		{

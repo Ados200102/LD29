@@ -177,8 +177,9 @@ public class Art
 		return 0xff000000 | r | g | b;
 	}
 
-	public static String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ      " + //
-			"0123456789!\\/[](){}+-=©         ";
+	public static String chars = 
+			"ABCDEFGHIJKLMNOPQRSTUVWXYZ      " + //
+			"0123456789.,!?'\"-+=/\\%()<>:;    ";
 
 	public void drawText(String text, int xOffs, int yOffs, int color)
 	{
