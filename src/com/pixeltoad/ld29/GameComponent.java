@@ -6,10 +6,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.io.IOException;
-
-import com.pixeltoad.ld29.gfx.Art;
-import com.pixeltoad.ld29.gfx.Bitmap;
 
 public class GameComponent extends Canvas implements Runnable
 {
@@ -18,13 +14,12 @@ public class GameComponent extends Canvas implements Runnable
 	private static final int WIDTH = 128;
 	private static final int HEIGHT = 174;
 	private static final int SCALE = 4;
-
+	
 	private boolean running;
 	private Thread thread;
 
-	private Bitmap bitmap;
-	private Art art;
-
+	private Game game;
+	
 	private BufferedImage img;
 	private int[] pixels;
 
@@ -35,16 +30,8 @@ public class GameComponent extends Canvas implements Runnable
 		setPreferredSize(size);
 		setMinimumSize(size);
 		setMaximumSize(size);
-
-		art = new Art(WIDTH, HEIGHT);
 		
-		try
-		{
-			bitmap = new Bitmap("/sprites.png");
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		game = new Game(this, WIDTH, HEIGHT);
 
 		img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
@@ -132,6 +119,7 @@ public class GameComponent extends Canvas implements Runnable
 	
 	public void tick()
 	{
+		game.tick();
 	}
 
 	public void render()
@@ -143,15 +131,13 @@ public class GameComponent extends Canvas implements Runnable
 			return;
 		}
 		
-		art.fill(WIDTH, HEIGHT, 0, 0, 0x000000);
-		art.drawBitmap(bitmap, 0, 0, 0.25f);
-		art.fill(WIDTH, HEIGHT, 0, 0, 0xFFFFFF, 126);
+		game.render();
 		
-		for(int y = 0; y < art.getHeight(); y++)
+		for(int y = 0; y < game.art.getHeight(); y++)
 		{
-			for(int x = 0; x < art.getWidth(); x++)
+			for(int x = 0; x < game.art.getWidth(); x++)
 			{
-				pixels[x + y * WIDTH] = art.getPixels()[x + y * art.getWidth()]; 
+				pixels[x + y * WIDTH] = game.art.getPixels()[x + y * game.art.getWidth()]; 
 			}
 		}
 		
