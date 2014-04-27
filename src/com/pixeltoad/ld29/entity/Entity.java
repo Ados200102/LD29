@@ -68,7 +68,12 @@ public abstract class Entity
 	{
 		return id;
 	}
-
+	
+	public boolean isSolid()
+	{
+		return false;
+	}
+	
 	public boolean isOnScreen(Level level)
 	{
 		return (x >= 0 && x < level.width && y >= 0 && y < level.height);

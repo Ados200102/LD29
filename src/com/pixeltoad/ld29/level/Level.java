@@ -3,6 +3,7 @@ package com.pixeltoad.ld29.level;
 import java.util.Random;
 
 import com.pixeltoad.ld29.InputHandler;
+import com.pixeltoad.ld29.entity.CoinEntity;
 import com.pixeltoad.ld29.entity.Entity;
 import com.pixeltoad.ld29.entity.Player;
 import com.pixeltoad.ld29.entity.RenderEntity;
@@ -20,15 +21,12 @@ public class Level
 	public float speed = 1;
 	public int distance;
 
-	public Set set;
-
 	public Level(int width, int height)
 	{
 		this.width = width;
 		this.height = height;
 		player = new Player(width / 2 - 4, 32);
-		set = Set.getSet(0);
-		addSet();
+		spawnEntity(new CoinEntity(8, 16));
 	}
 
 	public void render(Art art)
@@ -44,7 +42,15 @@ public class Level
 
 		for (Entity e : entities)
 		{
-			if (e != null)
+			if (e instanceof RenderEntity)
+			{
+				e.render(art, this);
+			}
+		}
+		
+		for (Entity e : entities)
+		{
+			if (e != null && !(e instanceof RenderEntity))
 			{
 				e.render(art, this);
 			}
@@ -52,7 +58,7 @@ public class Level
 
 		player.render(art, this);
 
-		art.drawText("Distance: " + distance / 8 + "M\n" + "Speed: " + (int) speed, 2, 2, 0xFFFFFF);
+		art.drawText("Distance: " + distance / 8 + "M\n" + "Speed: " + (int) speed + "\n" + "Score: " + player.getScore(), 2, 2, 0xFFFFFF);
 	}
 
 	private int scroll, scroll2;
@@ -91,6 +97,7 @@ public class Level
 		if (random.nextInt(64) < 2)
 		{
 			spawnEntity(new RenderEntity(random.nextInt(width - 8), height + 1, random.nextInt(6)));
+			spawnEntity(new CoinEntity(random.nextInt(width - 8), height + 1));
 		}
 
 		generate();
@@ -119,18 +126,6 @@ public class Level
 		}
 	}
 
-	public void addSet()
-	{
-		for (Entity e : set.getEntities())
-		{
-			if (e != null)
-			{
-				e.move(0, height);
-				spawnEntity(e);
-			}
-		}
-	}
-
 	public void removeEntity(Entity entity)
 	{
 		entities[entity.id] = null;
@@ -138,10 +133,5 @@ public class Level
 
 	public void generate()
 	{
-		if (set != null)
-			if (set.isDone(this))
-			{
-				System.out.println("Test");
-			}
 	}
 }
