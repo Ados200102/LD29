@@ -15,7 +15,7 @@ public class Player extends Entity
 	Rectangle up;
 	Rectangle down;
 
-	private final int MAX_HEALTH = 10;
+	public final int MAX_HEALTH = 10;
 
 	private int score;
 	private int health;
@@ -94,6 +94,8 @@ public class Player extends Entity
 		if (e instanceof SoildEntity)
 		{
 			health--;
+			System.out.println(health);
+			System.out.println(MAX_HEALTH);
 			invTimer = 300;
 		}
 	}

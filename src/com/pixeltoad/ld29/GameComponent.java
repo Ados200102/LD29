@@ -7,6 +7,8 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
+import com.pixeltoad.ld29.gfx.Art;
+import com.pixeltoad.ld29.menu.Menu;
 import com.pixeltoad.ld29.sfx.Sound;
 
 public class GameComponent extends Canvas implements Runnable
@@ -16,14 +18,18 @@ public class GameComponent extends Canvas implements Runnable
 	private static final int WIDTH = 256;
 	private static final int HEIGHT = 348;
 	private static final int SCALE = 2;
-	
+
 	private boolean running;
 	private Thread thread;
 
 	private Game game;
+	private Menu menu;
 	
 	private BufferedImage img;
 	private int[] pixels;
+	
+	public InputHandler input;
+	public Art art;
 
 	public GameComponent()
 	{
@@ -32,12 +38,15 @@ public class GameComponent extends Canvas implements Runnable
 		setPreferredSize(size);
 		setMinimumSize(size);
 		setMaximumSize(size);
-		
+
 		game = new Game(this, WIDTH, HEIGHT);
+		
+		input = new InputHandler(this);
+		art = new Art(WIDTH, HEIGHT);
 
 		img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
-		
+
 		Sound.music.loop();
 	}
 
@@ -120,10 +129,13 @@ public class GameComponent extends Canvas implements Runnable
 			}
 		}
 	}
-	
+
 	public void tick()
 	{
-		game.tick();
+		if (game != null)
+			game.tick();
+		if(menu!= null)
+			menu.tick(input);
 	}
 
 	public void render()
@@ -134,17 +146,17 @@ public class GameComponent extends Canvas implements Runnable
 			createBufferStrategy(3);
 			return;
 		}
-		
+
 		game.render();
-		
-		for(int y = 0; y < game.art.getHeight(); y++)
+
+		for (int y = 0; y < art.getHeight(); y++)
 		{
-			for(int x = 0; x < game.art.getWidth(); x++)
+			for (int x = 0; x < art.getWidth(); x++)
 			{
-				pixels[x + y * WIDTH] = game.art.getPixels()[x + y * game.art.getWidth()]; 
+				pixels[x + y * WIDTH] = art.getPixels()[x + y * art.getWidth()];
 			}
 		}
-		
+
 		Graphics g = bs.getDrawGraphics();
 
 		int ww = WIDTH * SCALE;

@@ -63,6 +63,8 @@ public class Level
 		player.render(art, this);
 
 		art.drawText("Distance: " + distance / 8 + "M\n" + "Speed: " + (int) speed + "\n" + "Score: " + player.getScore(), 2, 2, 0xFFFFFF);
+		art.fill(80, 20, width - 88, 8, 0x606060);
+		art.fill((int)((player.getHealth() * 1.0 / player.MAX_HEALTH) * 78), 18, width - 87, 9, 0xFf6060);
 	}
 
 	private int scroll, scroll2;
