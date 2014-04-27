@@ -1,7 +1,6 @@
 package com.pixeltoad.ld29.level;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,7 +18,7 @@ import com.pixeltoad.ld29.entity.SoildEntity;
 
 public class Set
 {
-	private Entity[] entities;
+	public Entity[] entities;
 
 	private static Document doc;
 	private static NodeList nodeList;
@@ -51,47 +50,48 @@ public class Set
 	public static Set getSet(int id)
 	{
 		Set set = new Set();
-		
+
 		Node node = nodeList.item(id);
 
 		NodeList nnm = node.getChildNodes();
+		
+		set.entities = new Entity[nnm.getLength()];
 
 		for (int j = 0; j < nnm.getLength(); j++)
 		{
 			NamedNodeMap n = nnm.item(j).getAttributes();
 			
-			set.entities = new Entity[n.getLength()];
+			int x = new Integer(n.getNamedItem("x").getNodeValue());
+			int y = new Integer(n.getNamedItem("y").getNodeValue());
+
+			String ent = n.getNamedItem("entity").getNodeValue();
 			
-			for (int l = 0; l < n.getLength(); l++)
+			if (ent.contains("solid"))
 			{
-				int x = new Integer(n.getNamedItem("x").getNodeValue());
-				int y = new Integer(n.getNamedItem("y").getNodeValue());
-				
-				String ent = n.getNamedItem("entity").getNodeValue();
-				
-				if(ent == "solid")
-					set.entities[l] = new SoildEntity(x, y, 18);
-				if(ent == "coin")
-					set.entities[l] = new CoinEntity(x, y);
+				set.entities[j] = new SoildEntity(x * 8, y * 8, 18);
+			}
+			if (ent.contains("coin"))
+			{
+				set.entities[j] = new CoinEntity(x * 8, y * 8);
 			}
 		}
 		
 		return set;
 	}
-	
+
 	public static int maxSets()
 	{
 		return doc.getElementsByTagName("set").getLength();
 	}
-	
+
 	public boolean isDone()
 	{
-		for(Entity e : entities)
+		for (Entity e : entities)
 		{
-			if(e != null)
+			if (e != null)
 				return false;
 		}
-		
+
 		return true;
 	}
 }

@@ -24,10 +24,6 @@ public class RenderEntity extends Entity
 	public void tick(InputHandler input, Level level)
 	{
 		move(0, (int) -Math.abs(level.speed));
-		if (getY() > level.height)
-		{
-			level.removeEntity(this);
-		}
 	}
 
 }

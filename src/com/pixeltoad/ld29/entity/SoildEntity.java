@@ -17,6 +17,7 @@ public class SoildEntity extends Entity
 	public void render(Art art, Level level)
 	{
 		art.drawTile(art.spriteSheet, getX(), getY(), 13 + frame / 6, 8);
+		getHitBox().render(art);
 	}
 	
 	public boolean isSolid()
@@ -28,10 +29,6 @@ public class SoildEntity extends Entity
 	public void tick(InputHandler input, Level level)
 	{
 		move(0, (int) -Math.abs(level.speed));
-		if (getY() > level.height)
-		{
-			level.removeEntity(this);
-		}
 	}
 
 }

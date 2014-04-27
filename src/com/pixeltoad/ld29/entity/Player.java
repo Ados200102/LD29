@@ -111,14 +111,13 @@ public class Player extends Entity
 
 		for (Entity e : level.entities)
 		{
-			if (e != null && !(e instanceof RenderEntity))
+			if (e != null)
 			{
 				if (left && x != 0)
 				{
 					this.left.setX(xx);
 					if (this.left.intersects(e.getHitBox()))
 					{
-						System.out.println("Entity " + e + " touched the left of player");
 						touch(e, level);
 						if (e.isSolid())
 							return false;
@@ -131,7 +130,6 @@ public class Player extends Entity
 					this.right.setX(xx + getWidth());
 					if (this.right.intersects(e.getHitBox()))
 					{
-						System.out.println("Entity " + e + " touched the right of player");
 						touch(e, level);
 						if (e.isSolid())
 							return false;
@@ -144,7 +142,6 @@ public class Player extends Entity
 					this.down.setY(yy + getHeight());
 					if (this.down.intersects(e.getHitBox()))
 					{
-						System.out.println("Entity " + e + " touched the bottom of player");
 						hit(e, level);
 						if (e.isSolid())
 							return false;
@@ -157,7 +154,6 @@ public class Player extends Entity
 					this.up.setY(yy);
 					if (this.up.intersects(e.getHitBox()))
 					{
-						System.out.println("Entity " + e + " touched the top of player");
 						touch(e, level);
 						if (e.isSolid())
 							return false;

@@ -21,12 +21,15 @@ public class Level
 	public float speed = 1;
 	public int distance;
 
+	public Set set;
+
 	public Level(int width, int height)
 	{
 		this.width = width;
 		this.height = height;
 		player = new Player(width / 2 - 4, 32);
 		spawnEntity(new CoinEntity(8, 16));
+		Set.init();
 	}
 
 	public void render(Art art)
@@ -47,7 +50,7 @@ public class Level
 				e.render(art, this);
 			}
 		}
-		
+
 		for (Entity e : entities)
 		{
 			if (e != null && !(e instanceof RenderEntity))
@@ -97,7 +100,6 @@ public class Level
 		if (random.nextInt(64) < 2)
 		{
 			spawnEntity(new RenderEntity(random.nextInt(width - 8), height + 1, random.nextInt(6)));
-			spawnEntity(new CoinEntity(random.nextInt(width - 8), height + 1));
 		}
 
 		generate();
@@ -118,10 +120,19 @@ public class Level
 
 	public void spawnEntity(Entity entity)
 	{
+		spawnEntity(entity, false, 0);
+	}
+	
+	public void spawnEntity(Entity entity, boolean flag, int sid)
+	{
 		int id = getFreeEntityId();
 		if (id >= 0)
 		{
 			entity.id = id;
+			if (flag){
+				entity.sid = sid;
+				entity.setPos(entity.getX(), entity.getY() + height);
+			}
 			entities[id] = entity;
 		}
 	}
@@ -129,9 +140,22 @@ public class Level
 	public void removeEntity(Entity entity)
 	{
 		entities[entity.id] = null;
+		if(entity.sid >= 0)
+			set.entities[entity.sid] = null;
 	}
 
 	public void generate()
 	{
+		if (set == null || set.isDone())
+		{
+			set = Set.getSet(random.nextInt(Set.maxSets()));
+			for (int i = 0; i < set.entities.length; i++)
+			{
+				Entity e = set.entities[i];
+				
+				e.move(0, height);
+				spawnEntity(e, true, i);
+			}
+		}
 	}
 }

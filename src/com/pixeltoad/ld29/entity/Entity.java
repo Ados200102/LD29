@@ -8,7 +8,7 @@ import com.pixeltoad.ld29.level.Level;
 public abstract class Entity
 {
 	private int x, y, width, height;
-	public int id;
+	public int id, sid = -1;
 	private Rectangle hitBox;
 	
 	public Entity(int x, int y, int width, int height)
