@@ -7,6 +7,8 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
+import com.pixeltoad.ld29.sfx.Sound;
+
 public class GameComponent extends Canvas implements Runnable
 {
 	private static final long serialVersionUID = 1L;
@@ -35,6 +37,8 @@ public class GameComponent extends Canvas implements Runnable
 
 		img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
+		
+		Sound.music.loop();
 	}
 
 	public synchronized void start()

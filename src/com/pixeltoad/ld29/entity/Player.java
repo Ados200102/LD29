@@ -6,6 +6,7 @@ import com.pixeltoad.ld29.InputHandler;
 import com.pixeltoad.ld29.geom.Rectangle;
 import com.pixeltoad.ld29.gfx.Art;
 import com.pixeltoad.ld29.level.Level;
+import com.pixeltoad.ld29.sfx.Sound;
 
 public class Player extends Entity
 {
@@ -77,6 +78,7 @@ public class Player extends Entity
 		if (e instanceof CoinEntity)
 		{
 			score++;
+			Sound.coin.play();
 			level.removeEntity(e);
 		}
 	}
@@ -86,6 +88,7 @@ public class Player extends Entity
 		if (e instanceof CoinEntity)
 		{
 			score++;
+			Sound.coin.play();
 			level.removeEntity(e);
 		}
 	}
