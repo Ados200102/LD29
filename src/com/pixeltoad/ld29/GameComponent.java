@@ -44,7 +44,7 @@ public class GameComponent extends Canvas implements Runnable
 		setMinimumSize(size);
 		setMaximumSize(size);
 
-		menu = new GameOverMenu();//new MainMenu();
+		menu = new MainMenu();
 
 		input = new InputHandler(this);
 		art = new Art(WIDTH, HEIGHT);
@@ -52,7 +52,7 @@ public class GameComponent extends Canvas implements Runnable
 		img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
 
-//		Sound.music.loop();
+		Sound.music.loop();
 	}
 
 	public synchronized void start()
