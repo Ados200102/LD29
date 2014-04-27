@@ -15,6 +15,7 @@ public class Player extends Entity
 	Rectangle down;
 
 	private int score;
+	private int health;
 
 	public Player(int x, int y)
 	{
@@ -65,8 +66,10 @@ public class Player extends Entity
 		if (down)
 			yy++;
 
-		if (move2(xx * 2, yy * 2, level))
-			move(xx * 2, yy * 2);;
+		if (move2(0, yy * 2, level))
+			move(0, yy * 2);
+		if (move2(xx * 2, 0, level))
+			move(xx * 2, 0);
 	}
 
 	public void hit(Entity e, Level level)
@@ -92,6 +95,12 @@ public class Player extends Entity
 		int xx = getX() + x;
 		int yy = getY() + y;
 
+		if (x != 0 && y != 0)
+		{
+			System.err.println("Cannot calculate x and y at same time");
+			return false;
+		}
+
 		boolean left = (x < 0);
 		boolean right = (x > 0);
 		boolean down = (y > 0);
@@ -101,7 +110,7 @@ public class Player extends Entity
 		{
 			if (e != null && !(e instanceof RenderEntity))
 			{
-				if (left)
+				if (left && x != 0)
 				{
 					this.left.setX(xx);
 					if (this.left.intersects(e.getHitBox()))
@@ -111,8 +120,10 @@ public class Player extends Entity
 						if (e.isSolid())
 							return false;
 					}
+					if (xx <= 0)
+						return false;
 				}
-				if (right)
+				if (right && x != 0)
 				{
 					this.right.setX(xx + getWidth());
 					if (this.right.intersects(e.getHitBox()))
@@ -122,8 +133,10 @@ public class Player extends Entity
 						if (e.isSolid())
 							return false;
 					}
+					if (xx + getWidth() >= level.width)
+						return false;
 				}
-				if (down)
+				if (down && y != 0)
 				{
 					this.down.setY(yy + getHeight());
 					if (this.down.intersects(e.getHitBox()))
@@ -133,8 +146,10 @@ public class Player extends Entity
 						if (e.isSolid())
 							return false;
 					}
+					if (yy + getHeight() >= level.height / 4 * 3)
+						return false;
 				}
-				if (up)
+				if (up && y != 0)
 				{
 					this.up.setY(yy);
 					if (this.up.intersects(e.getHitBox()))
@@ -144,6 +159,8 @@ public class Player extends Entity
 						if (e.isSolid())
 							return false;
 					}
+					if (yy <= 32)
+						return false;
 				}
 				if (this.getHitBox().intersects(e.getHitBox()))
 				{
@@ -167,5 +184,10 @@ public class Player extends Entity
 	public int getScore()
 	{
 		return score;
+	}
+
+	public int getHealth()
+	{
+		return health;
 	}
 }
