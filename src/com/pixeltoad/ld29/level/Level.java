@@ -30,6 +30,7 @@ public class Level
 		player = new Player(width / 2 - 4, 32);
 		spawnEntity(new CoinEntity(8, 16));
 		Set.init();
+		generate();
 	}
 
 	public void render(Art art)
@@ -102,8 +103,6 @@ public class Level
 			spawnEntity(new RenderEntity(random.nextInt(width - 8), height + 1, random.nextInt(6)));
 		}
 
-		generate();
-
 		player.tick(input, this);
 	}
 
@@ -122,16 +121,16 @@ public class Level
 	{
 		spawnEntity(entity, false, 0);
 	}
-	
+
 	public void spawnEntity(Entity entity, boolean flag, int sid)
 	{
 		int id = getFreeEntityId();
 		if (id >= 0)
 		{
 			entity.id = id;
-			if (flag){
+			if (flag)
+			{
 				entity.sid = sid;
-				entity.setPos(entity.getX(), entity.getY() + height);
 			}
 			entities[id] = entity;
 		}
@@ -140,22 +139,20 @@ public class Level
 	public void removeEntity(Entity entity)
 	{
 		entities[entity.id] = null;
-		if(entity.sid >= 0)
+		if (entity.sid >= 0 && entity.sid < set.entities.length)
 			set.entities[entity.sid] = null;
 	}
 
 	public void generate()
 	{
-		if (set == null || set.isDone())
+		System.out.println("Generate is called!");
+		set = Set.getSet(random.nextInt(Set.maxSets()));
+		for (int i = 0; i < set.entities.length; i++)
 		{
-			set = Set.getSet(random.nextInt(Set.maxSets()));
-			for (int i = 0; i < set.entities.length; i++)
-			{
-				Entity e = set.entities[i];
-				
-				e.move(0, height);
-				spawnEntity(e, true, i);
-			}
+			Entity e = set.entities[i];
+
+			e.move(0, height);
+			spawnEntity(e, true, i);
 		}
 	}
 }

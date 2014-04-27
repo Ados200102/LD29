@@ -4,32 +4,28 @@ import com.pixeltoad.ld29.InputHandler;
 import com.pixeltoad.ld29.gfx.Art;
 import com.pixeltoad.ld29.level.Level;
 
-public class CoinEntity extends Entity
+public class EndEntity extends Entity
 {
-	public boolean collected = false;
-
-	public CoinEntity(int x, int y)
+	public EndEntity(int x, int y)
 	{
 		super(x, y, 8, 8);
 	}
 
-	int frame;
-
 	@Override
 	public void render(Art art, Level level)
 	{
-		if (!collected)
-		{
-			frame++;
-			frame %= (4 * 6);
-
-			art.drawTile(art.spriteSheet, getX(), getY(), 13 + frame / 6, 8);
-		}
+		getHitBox().render(art);
 	}
 
+	boolean gen = false;
+	
 	@Override
 	public void tick(InputHandler input, Level level)
 	{
 		move(0, (int) -Math.abs(level.speed));
+		if(getY() <= level.height && !gen){
+			level.generate();
+			gen = true;
+		}
 	}
 }

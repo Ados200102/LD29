@@ -73,19 +73,20 @@ public class XMLGen
 		Element rootElement = doc.createElement("sets");
 		doc.appendChild(rootElement);
 
-		Element set = doc.createElement("set");
-		rootElement.appendChild(set);
-
 		for (int i = 0; i < images.length; i++)
 		{
+			Element set = doc.createElement("set");
+			rootElement.appendChild(set);
+
 			String image = images[i];
 			BufferedImage img = ImageIO.read(XMLGen.class.getResourceAsStream("/sets/" + image));
 			int width = img.getWidth();
 			int height = img.getHeight();
 			int[] pixels = img.getRGB(0, 0, width, height, null, 0, width);
-			
+
 			set.setAttribute("id", "" + i);
-			
+			set.setAttribute("height", height + "");
+
 			for (int x = 0; x < width; x++)
 			{
 				for (int y = 0; y < height; y++)
@@ -97,19 +98,18 @@ public class XMLGen
 						set.appendChild(obj);
 
 						if (color == 0xFFFFD800)
-						{
 							obj.setAttribute("entity", "coin");
-						}
 						if (color == 0xFF404040)
-						{
 							obj.setAttribute("entity", "solid");
-						}
+						if (color == 0xff000000)
+							obj.setAttribute("entity", "end");
 
 						obj.setAttribute("x", "" + x);
 						obj.setAttribute("y", "" + y);
 					}
 				}
 			}
+
 		}
 
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();

@@ -77,9 +77,13 @@ public class Player extends Entity
 	{
 		if (e instanceof CoinEntity)
 		{
-			score++;
-			Sound.coin.play();
-			level.removeEntity(e);
+			CoinEntity ce = ((CoinEntity) e);
+			if (!ce.collected)
+			{
+				score++;
+				Sound.coin.play();
+				ce.collected = true;
+			}
 		}
 	}
 
@@ -87,9 +91,13 @@ public class Player extends Entity
 	{
 		if (e instanceof CoinEntity)
 		{
-			score++;
-			Sound.coin.play();
-			level.removeEntity(e);
+			CoinEntity ce = ((CoinEntity) e);
+			if (!ce.collected)
+			{
+				score++;
+				Sound.coin.play();
+				ce.collected = true;
+			}
 		}
 	}
 

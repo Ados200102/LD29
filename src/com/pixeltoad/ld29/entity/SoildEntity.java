@@ -16,8 +16,7 @@ public class SoildEntity extends Entity
 	@Override
 	public void render(Art art, Level level)
 	{
-		art.drawTile(art.spriteSheet, getX(), getY(), 13 + frame / 6, 8);
-		getHitBox().render(art);
+		art.drawTile(art.spriteSheet, getX(), getY(), 18 + (frame / 6), 8);
 	}
 	
 	public boolean isSolid()
