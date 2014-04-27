@@ -6,9 +6,7 @@ import com.pixeltoad.ld29.level.Level;
 
 public class SoildEntity extends Entity
 {
-	private int frame;
-	
-	public SoildEntity(int x, int y, int frame)
+	public SoildEntity(int x, int y)
 	{
 		super(x, y, 8, 8);
 	}
@@ -16,7 +14,7 @@ public class SoildEntity extends Entity
 	@Override
 	public void render(Art art, Level level)
 	{
-		art.drawTile(art.spriteSheet, getX(), getY(), 18 + (frame / 6), 8);
+		art.drawTile(art.spriteSheet, getX(), getY(), 18, 8);
 	}
 	
 	public boolean isSolid()

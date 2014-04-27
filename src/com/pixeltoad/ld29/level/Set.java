@@ -71,7 +71,7 @@ public class Set
 			String ent = n.getNamedItem("entity").getNodeValue();
 
 			if (ent.contains("solid"))
-				set.entities[j] = new SoildEntity(x * 8, y * 8, 18);
+				set.entities[j] = new SoildEntity(x * 8, y * 8);
 			if (ent.contains("coin"))
 				set.entities[j] = new CoinEntity(x * 8, y * 8);
 			if (ent.contains("end"))

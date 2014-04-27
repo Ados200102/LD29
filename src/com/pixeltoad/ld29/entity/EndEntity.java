@@ -14,7 +14,6 @@ public class EndEntity extends Entity
 	@Override
 	public void render(Art art, Level level)
 	{
-		getHitBox().render(art);
 	}
 
 	boolean gen = false;

@@ -15,8 +15,11 @@ public class Player extends Entity
 	Rectangle up;
 	Rectangle down;
 
+	private final int MAX_HEALTH = 10;
+
 	private int score;
 	private int health;
+	private int invTimer;
 
 	public Player(int x, int y)
 	{
@@ -25,6 +28,7 @@ public class Player extends Entity
 		right = new Rectangle(x + 8, y, 1, 16);
 		down = new Rectangle(x, y + 16, 8, 1);
 		up = new Rectangle(x, y - 1, 8, 1);
+		health = MAX_HEALTH;
 	}
 
 	int frame;
@@ -35,14 +39,11 @@ public class Player extends Entity
 		frame++;
 		frame %= 14;
 
-		art.drawTile(art.spriteSheet, getX(), getY(), 6 + frame / 2, 8);
-		art.drawTile(art.spriteSheet, getX(), getY() + 8, 6 + frame / 2 + 32, 8);
-
-		//		getHitBox().render(art);
-		//		left.render(art);
-		//		right.render(art);
-		//		down.render(art);
-		//		up.render(art);
+		if (invTimer % 10 == 0)
+		{
+			art.drawTile(art.spriteSheet, getX(), getY(), 6 + frame / 2, 8);
+			art.drawTile(art.spriteSheet, getX(), getY() + 8, 6 + frame / 2 + 32, 8);
+		}
 	}
 
 	int xx, yy;
@@ -71,6 +72,11 @@ public class Player extends Entity
 			move(0, yy * 2);
 		if (move2(xx * 2, 0, level))
 			move(xx * 2, 0);
+		
+		move2(0, 1, level);
+		
+		if (invTimer > 0)
+			invTimer--;
 	}
 
 	public void hit(Entity e, Level level)
@@ -84,6 +90,11 @@ public class Player extends Entity
 				Sound.coin.play();
 				ce.collected = true;
 			}
+		}
+		if (e instanceof SoildEntity)
+		{
+			health--;
+			invTimer = 300;
 		}
 	}
 
@@ -124,7 +135,7 @@ public class Player extends Entity
 				if (left && x != 0)
 				{
 					this.left.setX(xx);
-					if (this.left.intersects(e.getHitBox()))
+					if (this.left.intersects(e.getHitBox()) && !(invTimer > 0))
 					{
 						touch(e, level);
 						if (e.isSolid())
@@ -136,7 +147,7 @@ public class Player extends Entity
 				if (right && x != 0)
 				{
 					this.right.setX(xx + getWidth());
-					if (this.right.intersects(e.getHitBox()))
+					if (this.right.intersects(e.getHitBox()) && !(invTimer > 0))
 					{
 						touch(e, level);
 						if (e.isSolid())
@@ -148,7 +159,7 @@ public class Player extends Entity
 				if (down && y != 0)
 				{
 					this.down.setY(yy + getHeight());
-					if (this.down.intersects(e.getHitBox()))
+					if (this.down.intersects(e.getHitBox()) && !(invTimer > 0))
 					{
 						hit(e, level);
 						if (e.isSolid())
@@ -160,7 +171,7 @@ public class Player extends Entity
 				if (up && y != 0)
 				{
 					this.up.setY(yy);
-					if (this.up.intersects(e.getHitBox()))
+					if (this.up.intersects(e.getHitBox()) && !(invTimer > 0))
 					{
 						touch(e, level);
 						if (e.isSolid())

@@ -151,7 +151,7 @@ public class Level
 		{
 			Entity e = set.entities[i];
 
-			e.move(0, height);
+			e.move(0, height + 10);
 			spawnEntity(e, true, i);
 		}
 	}
