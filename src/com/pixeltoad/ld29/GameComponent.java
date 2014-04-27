@@ -26,6 +26,9 @@ public class GameComponent extends Canvas implements Runnable
 
 	private Game game;
 	private Menu menu;
+	
+	public int score;
+	public int distance;
 
 	private BufferedImage img;
 	private int[] pixels;
@@ -41,8 +44,7 @@ public class GameComponent extends Canvas implements Runnable
 		setMinimumSize(size);
 		setMaximumSize(size);
 
-//		game = new Game(this, WIDTH, HEIGHT);
-		menu = new MainMenu();
+		menu = new GameOverMenu();//new MainMenu();
 
 		input = new InputHandler(this);
 		art = new Art(WIDTH, HEIGHT);
@@ -181,6 +183,8 @@ public class GameComponent extends Canvas implements Runnable
 
 	public void gameOver()
 	{
+		score = game.level.player.score;
+		distance = game.level.distance;
 		game = null;
 		setMenu(new GameOverMenu());
 	}
@@ -198,5 +202,11 @@ public class GameComponent extends Canvas implements Runnable
 	public static int getScreenWidth()
 	{
 		return WIDTH;
+	}
+
+	public void newGame()
+	{
+		setMenu(null);
+		game = new Game(this, WIDTH, HEIGHT);
 	}
 }

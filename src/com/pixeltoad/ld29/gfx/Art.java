@@ -71,7 +71,7 @@ public class Art
 					continue;
 				int color = bitmap.getPixels()[x + y * bitmap.getWidth()];
 				int a = (color >> 24) & 0xFF;
-				if (alpha >= 255)
+				if(a <= 255)
 					alpha = a;
 				int bColor = pixels[xPos + yPos * width];
 				pixels[xPos + yPos * width] = blendPixels(bColor, color, alpha);
@@ -178,8 +178,7 @@ public class Art
 		return 0xff000000 | r | g | b;
 	}
 
-	public static String chars = 
-			"ABCDEFGHIJKLMNOPQRSTUVWXYZ      " + //
+	public static String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ©     " + //
 			"0123456789.,!?'\"-+=/\\%()<>:;    ";
 
 	public void drawText(String text, int xOffs, int yOffs, int color)
@@ -194,7 +193,7 @@ public class Art
 		for (int i = 0; i < lines.length; i++)
 		{
 			String line = lines[i].trim();
-			
+
 			drawString(line, xOffs, yOffs + i * 10, color, alpha);
 		}
 	}
