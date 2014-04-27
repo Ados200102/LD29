@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 import com.pixeltoad.ld29.gfx.Art;
+import com.pixeltoad.ld29.menu.GameOverMenu;
+import com.pixeltoad.ld29.menu.MainMenu;
 import com.pixeltoad.ld29.menu.Menu;
 import com.pixeltoad.ld29.sfx.Sound;
 
@@ -24,10 +26,10 @@ public class GameComponent extends Canvas implements Runnable
 
 	private Game game;
 	private Menu menu;
-	
+
 	private BufferedImage img;
 	private int[] pixels;
-	
+
 	public InputHandler input;
 	public Art art;
 
@@ -39,15 +41,16 @@ public class GameComponent extends Canvas implements Runnable
 		setMinimumSize(size);
 		setMaximumSize(size);
 
-		game = new Game(this, WIDTH, HEIGHT);
-		
+//		game = new Game(this, WIDTH, HEIGHT);
+		menu = new MainMenu();
+
 		input = new InputHandler(this);
 		art = new Art(WIDTH, HEIGHT);
 
 		img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
 
-		Sound.music.loop();
+//		Sound.music.loop();
 	}
 
 	public synchronized void start()
@@ -134,8 +137,8 @@ public class GameComponent extends Canvas implements Runnable
 	{
 		if (game != null)
 			game.tick();
-		if(menu!= null)
-			menu.tick(input);
+		if (menu != null)
+			menu.tick(input, this);
 	}
 
 	public void render()
@@ -147,7 +150,10 @@ public class GameComponent extends Canvas implements Runnable
 			return;
 		}
 
-		game.render();
+		if (game != null)
+			game.render();
+		if (menu != null)
+			menu.render(art, this);
 
 		for (int y = 0; y < art.getHeight(); y++)
 		{
@@ -168,8 +174,29 @@ public class GameComponent extends Canvas implements Runnable
 		bs.show();
 	}
 
+	public void setMenu(Menu menu)
+	{
+		this.menu = menu;
+	}
+
+	public void gameOver()
+	{
+		game = null;
+		setMenu(new GameOverMenu());
+	}
+
 	public int[] getPixels()
 	{
 		return pixels;
+	}
+
+	public static int getScreenHeight()
+	{
+		return HEIGHT;
+	}
+
+	public static int getScreenWidth()
+	{
+		return WIDTH;
 	}
 }

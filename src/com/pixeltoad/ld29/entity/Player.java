@@ -15,7 +15,7 @@ public class Player extends Entity
 	Rectangle up;
 	Rectangle down;
 
-	public final int MAX_HEALTH = 10;
+	public final int MAX_HEALTH = 1;
 
 	private int score;
 	private int health;
@@ -97,6 +97,10 @@ public class Player extends Entity
 			System.out.println(health);
 			System.out.println(MAX_HEALTH);
 			invTimer = 300;
+			if(health == 0)
+			{
+				death(level);
+			}
 		}
 	}
 
@@ -112,6 +116,11 @@ public class Player extends Entity
 				ce.collected = true;
 			}
 		}
+	}
+	
+	public void death(Level level)
+	{
+		level.game.gc.gameOver();
 	}
 
 	public boolean move2(int x, int y, Level level)

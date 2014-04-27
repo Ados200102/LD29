@@ -2,6 +2,7 @@ package com.pixeltoad.ld29.level;
 
 import java.util.Random;
 
+import com.pixeltoad.ld29.Game;
 import com.pixeltoad.ld29.InputHandler;
 import com.pixeltoad.ld29.entity.CoinEntity;
 import com.pixeltoad.ld29.entity.Entity;
@@ -21,12 +22,14 @@ public class Level
 	public float speed = 1;
 	public int distance;
 
+	public Game game;
 	public Set set;
 
-	public Level(int width, int height)
+	public Level(int width, int height, Game game)
 	{
 		this.width = width;
 		this.height = height;
+		this.game = game;
 		player = new Player(width / 2 - 4, 32);
 		spawnEntity(new CoinEntity(8, 16));
 		Set.init();

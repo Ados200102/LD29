@@ -4,6 +4,7 @@ public class Art
 {
 	public Bitmap spriteSheet = new Bitmap("/sprites.png");
 	public Bitmap background = new Bitmap("/background.png");
+	public Bitmap title = new Bitmap("/title.png");
 
 	private int width, height;
 	private int[] pixels;

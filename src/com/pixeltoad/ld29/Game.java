@@ -1,12 +1,10 @@
 package com.pixeltoad.ld29;
 
-import com.pixeltoad.ld29.gfx.Art;
-import com.pixeltoad.ld29.gfx.Bitmap;
 import com.pixeltoad.ld29.level.Level;
 
 public class Game
 {
-	private GameComponent gc;
+	public GameComponent gc;
 	
 	private int width, height;
 
@@ -17,7 +15,7 @@ public class Game
 		this.width = width;
 		this.height = height;
 
-		level = new Level(width, height);
+		level = new Level(width, height, this);
 		
 		gc = gameComponent;
 	}
